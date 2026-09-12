@@ -1,0 +1,5 @@
+node_modules/
+.env
+data/candidates.json
+data/email_log.json
+*.log

@@ -1,0 +1,5 @@
+[
+  { "id": "rec_1", "name": "Alex Rivera", "email": "alex.rivera@example.com" },
+  { "id": "rec_2", "name": "Jordan Chen", "email": "jordan.chen@example.com" },
+  { "id": "rec_3", "name": "Sam Patel", "email": "sam.patel@example.com" }
+]

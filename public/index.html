@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Recruiter Coordinator — Dashboard</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1>Recruiter Coordinator</h1>
+      <span id="modeBadge" class="badge">loading…</span>
+    </header>
+
+    <main class="layout">
+      <section class="card upload-card">
+        <h2>1. Upload Candidates</h2>
+        <form id="uploadForm">
+          <label for="recruiterSelect">Recruiter</label>
+          <select id="recruiterSelect" name="recruiterId" required></select>
+
+          <label for="csvFile">Candidates CSV (columns: name, email)</label>
+          <input type="file" id="csvFile" name="csvFile" accept=".csv" required />
+
+          <button type="submit">Start Scheduling</button>
+        </form>
+        <p id="uploadMessage" class="message"></p>
+        <p class="hint">
+          No CSV handy? <a href="/sample-candidates.csv" download>Download a sample file</a>.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>2. Candidates</h2>
+        <table id="candidatesTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Recruiter</th>
+              <th>Status</th>
+              <th>Slot / Booked Time</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p id="emptyState" class="hint" style="display:none;">
+          No candidates yet — upload a CSV above to start the loop.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>3. Email Activity (mock outbox)</h2>
+        <p class="hint">
+          Shows every email the system would send, so you can demo the loop without a live SendGrid account.
+        </p>
+        <div id="emailLog" class="email-log"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
