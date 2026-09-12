@@ -5,3 +5,6 @@ public_dist/
 data/candidates.json
 data/email_log.json
 *.log
+.DS_Store
+.vscode/
+*.zip

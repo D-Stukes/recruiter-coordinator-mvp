@@ -1,14 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
 :root {
-  --bg: #f6f7f9;
-  --card: #ffffff;
-  --border: #e3e6ea;
-  --text: #1f2430;
-  --muted: #6b7280;
-  --accent: #4f46e5;
-  --accent-dark: #4338ca;
-  --pending: #9ca3af;
-  --slots-sent: #d97706;
-  --booked: #16a34a;
+  /* Neutral, cool-toned base -- a working document, not a marketing page */
+  --bg: #f4f5f5;
+  --surface: #ffffff;
+  --border: #d9e0dc;
+  --border-strong: #b6c2ba;
+
+  --text: #1b2420;
+  --text-muted: #5c6b62;
+
+  /* A single steady forest green carries the brand -- used for the header
+     band, primary actions, links, and the step markers. Nothing else
+     competes with it for attention. */
+  --brand: #1f5f45;
+  --brand-dark: #153f2e;
+  --brand-tint: #e6f0ea;
+  --gold: #a9812c;
+  --gold-tint: #f7eed7;
+
+  /* Status colors are functional (they carry meaning), not decorative.
+     Booked uses a teal rather than the brand green, so a glance at the
+     status column is never confused with the accent color. */
+  --status-pending: #6b7268;
+  --status-sent: #9a6b1f;
+  --status-sent-bg: #f6ecd9;
+  --status-booked: #0f766e;
+  --status-booked-bg: #dff3f1;
 }
 
 * {
@@ -17,7 +35,13 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  font-family: inherit;
 }

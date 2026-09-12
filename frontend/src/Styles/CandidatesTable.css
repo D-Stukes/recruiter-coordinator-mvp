@@ -7,33 +7,40 @@ table {
 th,
 td {
   text-align: left;
-  padding: 8px 6px;
+  padding: 10px 8px;
   border-bottom: 1px solid var(--border);
 }
 
 th {
-  color: var(--muted);
+  color: var(--text-muted);
   font-weight: 600;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+tbody tr:hover {
+  background: var(--brand-tint);
 }
 
 .status-pill {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: 999px;
-  color: white;
+  padding: 3px 9px;
+  border-radius: 3px;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-weight: 600;
 }
 
 .status-PENDING {
-  background: var(--pending);
+  background: #ececed;
+  color: var(--status-pending);
 }
 
 .status-SLOTS_SENT {
-  background: var(--slots-sent);
+  background: var(--status-sent-bg);
+  color: var(--status-sent);
 }
 
 .status-BOOKED {
-  background: var(--booked);
+  background: var(--status-booked-bg);
+  color: var(--status-booked);
 }

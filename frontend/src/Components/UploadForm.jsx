@@ -38,7 +38,7 @@ export default function UploadForm({ recruiters, onUploaded }) {
 
   return (
     <section className="card upload-card">
-      <h2>1. Upload Candidates</h2>
+      <h2><span className="step-number">1</span>Upload candidates</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="recruiterSelect">Recruiter</label>
         <select

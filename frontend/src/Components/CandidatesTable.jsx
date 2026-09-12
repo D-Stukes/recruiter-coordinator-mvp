@@ -5,7 +5,7 @@ import '../Styles/CandidatesTable.css';
 export default function CandidatesTable({ candidates }) {
   return (
     <section className="card">
-      <h2>2. Candidates</h2>
+      <h2><span className="step-number">2</span>Candidates</h2>
       <table>
         <thead>
           <tr>

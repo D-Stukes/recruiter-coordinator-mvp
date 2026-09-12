@@ -35,13 +35,15 @@ export default function App() {
   return (
     <div className="app">
       <Header status={status} />
-      <main className="layout">
-        {recruiters.length > 0 && (
-          <UploadForm recruiters={recruiters} onUploaded={refreshCandidatesAndEmail} />
-        )}
-        <CandidatesTable candidates={candidates} />
-        <EmailLog entries={emailLog} />
-      </main>
+      <div className="app-body">
+        <main className="layout">
+          {recruiters.length > 0 && (
+            <UploadForm recruiters={recruiters} onUploaded={refreshCandidatesAndEmail} />
+          )}
+          <CandidatesTable candidates={candidates} />
+          <EmailLog entries={emailLog} />
+        </main>
+      </div>
     </div>
   );
 }

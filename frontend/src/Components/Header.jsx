@@ -2,9 +2,11 @@ import calendarIcon from '../Images/calendar-icon.svg';
 import '../Styles/Header.css';
 
 export default function Header({ status }) {
-  const label = status
-    ? `Calendar: ${status.googleCalendarMode} · Email: ${status.emailMode}`
-    : 'loading…';
+  const label = !status
+    ? 'Loading…'
+    : status.googleCalendarMode === 'mock' && status.emailMode === 'mock'
+    ? 'Demo data — no live calendar or email connected'
+    : 'Live calendar and email connected';
 
   return (
     <header className="topbar">

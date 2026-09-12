@@ -1,27 +1,56 @@
 .email-log {
-  max-height: 260px;
+  max-height: 280px;
   overflow-y: auto;
   font-size: 13px;
 }
 
 .email-item {
   border-bottom: 1px solid var(--border);
-  padding: 8px 0;
+  padding: 10px 8px;
+  margin: 0 -8px;
+  border-radius: 4px;
+}
+
+.email-item:hover {
+  background: var(--brand-tint);
+}
+
+.email-item:last-child {
+  border-bottom: none;
 }
 
 .email-item .to {
   font-weight: 600;
+  color: var(--text);
 }
 
 .email-item .subject {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
-.email-item pre {
-  white-space: pre-wrap;
-  font-family: inherit;
-  background: var(--bg);
-  padding: 8px;
-  border-radius: 6px;
-  margin: 6px 0 0;
+.email-body {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+
+.email-line {
+  padding: 3px 8px;
+  margin: 0 -8px;
+  border-radius: 3px;
+  border-left: 2px solid transparent;
+  word-break: break-word;
+}
+
+.email-line.has-link:hover {
+  background: var(--gold-tint);
+  border-left: 2px solid var(--gold);
+}
+
+.email-line a {
+  color: var(--brand);
+  font-weight: 500;
 }
