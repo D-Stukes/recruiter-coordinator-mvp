@@ -1,4 +1,6 @@
 node_modules/
+frontend/node_modules/
+public_dist/
 .env
 data/candidates.json
 data/email_log.json

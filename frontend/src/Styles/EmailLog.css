@@ -1,0 +1,27 @@
+.email-log {
+  max-height: 260px;
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+.email-item {
+  border-bottom: 1px solid var(--border);
+  padding: 8px 0;
+}
+
+.email-item .to {
+  font-weight: 600;
+}
+
+.email-item .subject {
+  color: var(--muted);
+}
+
+.email-item pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  background: var(--bg);
+  padding: 8px;
+  border-radius: 6px;
+  margin: 6px 0 0;
+}

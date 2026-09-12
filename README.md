@@ -26,12 +26,32 @@ every email the system has sent, so you can watch the whole loop happen.
 
 ## Running it (mock mode — no API keys needed)
 
+The app is two pieces: an Express backend (`server.js`) and a React
+dashboard (`frontend/`, built with Vite). In production the backend serves
+the built frontend, so end-to-end there's just one server on one port.
+
+**One-time setup:**
 ```bash
-npm install
-npm start
+npm install                 # backend deps
+cd frontend && npm install  # frontend deps
 ```
 
-Then open **http://localhost:3000**.
+**Option A — production-style (single server, what you'll actually deploy):**
+```bash
+cd frontend && npm run build   # builds React into ../public_dist
+cd ..
+npm start                       # Express serves public_dist + the API on :3000
+```
+Open **http://localhost:3000**.
+
+**Option B — frontend dev mode (hot reload while editing components):**
+```bash
+npm start                       # terminal 1: Express API on :3000
+cd frontend && npm run dev      # terminal 2: Vite dev server on :5173
+```
+Open **http://localhost:5173** — Vite proxies `/api` and `/book` through to
+the Express server on :3000 (see `frontend/vite.config.js`), so components
+can just `fetch('/api/...')` with no CORS setup.
 
 By default the app runs fully self-contained:
 - **Google Calendar** is mocked — each recruiter gets deterministic fake
@@ -71,7 +91,7 @@ never a vendor SDK directly.
 ## Project structure
 
 ```
-server.js                   Express app entrypoint
+server.js                   Express app entrypoint (serves API + built React app)
 db.js                        Minimal JSON-file "database" (swap for real DB later)
 routes/
   upload.js                  Step 1: CSV upload -> creates PENDING candidates, kicks off scheduling
@@ -81,12 +101,28 @@ services/
   calendarService.js         Step 2: free/busy lookup + slot booking (mock + real Google hook)
   emailService.js             Step 3/5: candidate + recruiter emails (mock + real SendGrid hook)
   scheduler.js                 Orchestrates calendar + email for a candidate/batch
-public/
-  index.html, app.js, styles.css   Recruiter dashboard
-  sample-candidates.csv        Ready-to-use demo CSV
 data/
   recruiters.json              Seed list of recruiters shown in the dropdown (no login/auth in MVP)
   candidates.json, email_log.json   Runtime state (git-ignored, created on first run)
+public_dist/                 Build output of frontend/ (git-ignored, created by `npm run build`)
+
+frontend/                    React dashboard (Vite)
+  index.html                  Vite HTML entry
+  vite.config.js               Dev proxy to Express + build output -> ../public_dist
+  public/
+    sample-candidates.csv      Ready-to-use demo CSV, copied to public_dist/ as-is on build
+  src/
+    main.jsx                   React root
+    App.jsx                    Top-level layout, polls the API, composes the components below
+    Components/                One file per UI piece
+      Header.jsx
+      UploadForm.jsx            Step 1 form
+      CandidatesTable.jsx        Step 2 status table
+      StatusPill.jsx
+      EmailLog.jsx                Step 3/5 mock outbox view
+    Styles/                     One .css file per component, plus index.css (global) and App.css (layout)
+    Scripts/                    Non-component JS: api.js (all fetch calls), format.js (display helpers)
+    Images/                     Static assets imported by components (e.g. calendar-icon.svg)
 ```
 
 ## Data model (MVP)
