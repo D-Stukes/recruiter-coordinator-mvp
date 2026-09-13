@@ -91,7 +91,7 @@ export default function CandidatesTable({ candidates }) {
         </thead>
         <tbody>
           {visible.map((c) => (
-            <tr key={c.id}>
+            <tr key={c.id} className={c.status === 'BOOKED' ? 'row-booked' : ''}>
               <td>{c.name}</td>
               <td>{c.email}</td>
               <td>{c.recruiterName}</td>

@@ -18,6 +18,7 @@ export default function UploadForm({ recruiters, onUploaded }) {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState(null); // 'success' | 'error' | null
   const [submitting, setSubmitting] = useState(false);
+  const [showWarningModal, setShowWarningModal] = useState(false);
   const fileInputRef = useRef(null);
 
   function handleFileChange(e) {
@@ -30,10 +31,14 @@ export default function UploadForm({ recruiters, onUploaded }) {
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
-  async function handleSubmit(e) {
+  function handleFormSubmit(e) {
     e.preventDefault();
     if (!recruiterId) return;
+    setShowWarningModal(true);
+  }
 
+  async function confirmAndUpload() {
+    setShowWarningModal(false);
     setSubmitting(true);
     setMessage('Uploading…');
     setStatus(null);
@@ -59,7 +64,7 @@ export default function UploadForm({ recruiters, onUploaded }) {
   return (
     <section className="card upload-card">
       <h2><span className="step-number">1</span>Upload candidates</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <label htmlFor="recruiterSelect">Recruiter</label>
         <select
           id="recruiterSelect"
@@ -109,6 +114,31 @@ export default function UploadForm({ recruiters, onUploaded }) {
         </button>
       </form>
       {message && <p className={`message ${status || ''}`}>{message}</p>}
+
+      {showWarningModal && (
+        <div className="modal-overlay" role="dialog" aria-modal="true">
+          <div className="modal-box">
+            <h3>Heads up</h3>
+            <p>
+              Uploading candidates may take a few seconds to fully populate the
+              list below while scheduling runs in the background. Give it a
+              moment before assuming something's wrong.
+            </p>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => setShowWarningModal(false)}
+              >
+                Cancel
+              </button>
+              <button type="button" className="upload-button" onClick={confirmAndUpload}>
+                Got it, continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
