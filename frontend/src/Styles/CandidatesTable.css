@@ -22,7 +22,8 @@
   border-color: var(--brand);
 }
 
-.candidates-status-filter {
+.candidates-status-filter,
+.candidates-recruiter-filter {
   padding: 8px 10px;
   font-size: 13px;
   border: 1px solid var(--border-strong);
@@ -31,7 +32,8 @@
   color: inherit;
 }
 
-.candidates-status-filter:focus {
+.candidates-status-filter:focus,
+.candidates-recruiter-filter:focus {
   outline: none;
   border-color: var(--brand);
 }
@@ -41,6 +43,33 @@
   color: var(--text-muted);
   white-space: nowrap;
   margin-left: auto;
+}
+
+.candidates-pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.candidates-pagination .link-button {
+  background: none;
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.candidates-pagination .link-button:hover {
+  background: var(--brand-tint);
+}
+
+.candidates-pagination-hint {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 table {

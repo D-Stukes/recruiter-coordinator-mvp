@@ -14,6 +14,7 @@ function defaultCsvAsFile() {
 export default function UploadForm({ recruiters, onUploaded }) {
   const [recruiterId, setRecruiterId] = useState(recruiters[0]?.id || '');
   const [pickedFile, setPickedFile] = useState(null); // null = using the default dataset
+  const [showFileInput, setShowFileInput] = useState(false);
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState(null); // 'success' | 'error' | null
   const [submitting, setSubmitting] = useState(false);
@@ -25,6 +26,7 @@ export default function UploadForm({ recruiters, onUploaded }) {
 
   function resetToDefault() {
     setPickedFile(null);
+    setShowFileInput(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
@@ -72,24 +74,35 @@ export default function UploadForm({ recruiters, onUploaded }) {
           ))}
         </select>
 
-        <label htmlFor="csvFile">Candidates CSV (columns: name, email)</label>
-        <input
-          type="file"
-          id="csvFile"
-          accept=".csv"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-        />
-        <p className="hint">
-          {pickedFile
-            ? `Using: ${pickedFile.name}. `
-            : `Using ${DEFAULT_DATASET_LABEL}. `}
-          {pickedFile && (
-            <button type="button" className="link-button" onClick={resetToDefault}>
-              Use default instead
+        {showFileInput ? (
+          <>
+            <label htmlFor="csvFile">Candidates CSV (columns: name, email)</label>
+            <input
+              type="file"
+              id="csvFile"
+              accept=".csv"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+            <p className="hint">
+              {pickedFile ? `Using: ${pickedFile.name}. ` : 'Choose a CSV to upload. '}
+              <button type="button" className="link-button" onClick={resetToDefault}>
+                Use default dataset instead
+              </button>
+            </p>
+          </>
+        ) : (
+          <p className="hint">
+            Using {DEFAULT_DATASET_LABEL}.{' '}
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => setShowFileInput(true)}
+            >
+              Have your own CSV? Upload it instead
             </button>
-          )}
-        </p>
+          </p>
+        )}
 
         <button type="submit" className="upload-button" disabled={submitting}>
           {submitting ? 'Starting…' : 'Start Scheduling'}

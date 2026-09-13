@@ -1,22 +1,31 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import StatusPill from './StatusPill.jsx';
 import { slotOrBookedLabel, statusLabel } from '../Scripts/format.js';
 import '../Styles/CandidatesTable.css';
 
+const PAGE_SIZE = 10;
+
 export default function CandidatesTable({ candidates }) {
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [recruiterFilter, setRecruiterFilter] = useState('ALL');
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const statuses = useMemo(
     () => Array.from(new Set(candidates.map((c) => c.status))).sort(),
     [candidates]
   );
 
+  const recruiterNames = useMemo(
+    () => Array.from(new Set(candidates.map((c) => c.recruiterName))).sort(),
+    [candidates]
+  );
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return candidates.filter((c) => {
-      const matchesStatus = statusFilter === 'ALL' || c.status === statusFilter;
-      if (!matchesStatus) return false;
+      if (statusFilter !== 'ALL' && c.status !== statusFilter) return false;
+      if (recruiterFilter !== 'ALL' && c.recruiterName !== recruiterFilter) return false;
       if (!q) return true;
       return (
         c.name?.toLowerCase().includes(q) ||
@@ -24,7 +33,16 @@ export default function CandidatesTable({ candidates }) {
         c.recruiterName?.toLowerCase().includes(q)
       );
     });
-  }, [candidates, query, statusFilter]);
+  }, [candidates, query, statusFilter, recruiterFilter]);
+
+  // Reset back to the first page whenever the filter criteria change (not
+  // on every poll refresh of `candidates`, so scrolling isn't interrupted).
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [query, statusFilter, recruiterFilter]);
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <section className="card">
@@ -37,6 +55,16 @@ export default function CandidatesTable({ candidates }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
+        <select
+          className="candidates-recruiter-filter"
+          value={recruiterFilter}
+          onChange={(e) => setRecruiterFilter(e.target.value)}
+        >
+          <option value="ALL">All recruiters</option>
+          {recruiterNames.map((r) => (
+            <option key={r} value={r}>{r}</option>
+          ))}
+        </select>
         <select
           className="candidates-status-filter"
           value={statusFilter}
@@ -62,7 +90,7 @@ export default function CandidatesTable({ candidates }) {
           </tr>
         </thead>
         <tbody>
-          {filtered.map((c) => (
+          {visible.map((c) => (
             <tr key={c.id}>
               <td>{c.name}</td>
               <td>{c.email}</td>
@@ -80,6 +108,20 @@ export default function CandidatesTable({ candidates }) {
       )}
       {candidates.length > 0 && filtered.length === 0 && (
         <p className="hint">No candidates match your search.</p>
+      )}
+      {hasMore && (
+        <div className="candidates-pagination">
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
+          >
+            Show next {Math.min(PAGE_SIZE, filtered.length - visibleCount)}
+          </button>
+          <span className="candidates-pagination-hint">
+            Showing {visible.length} of {filtered.length}
+          </span>
+        </div>
       )}
     </section>
   );
