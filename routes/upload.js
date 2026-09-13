@@ -13,6 +13,15 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 function baseUrlFor(req) {
+  // On Vercel, the request as seen inside the serverless function doesn't
+  // reliably reflect the public-facing host, so relying on req.get('host')
+  // here can silently produce localhost links even in production. Vercel
+  // always sets VERCEL_URL (and, once a production alias exists,
+  // VERCEL_PROJECT_PRODUCTION_URL) as an environment variable -- using that
+  // instead guarantees the link points at the real live domain.
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercelHost) return `https://${vercelHost}`;
+
   return `${req.protocol}://${req.get('host')}`;
 }
 
