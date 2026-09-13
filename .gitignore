@@ -8,3 +8,4 @@ data/email_log.json
 .DS_Store
 .vscode/
 *.zip
+.vercel
