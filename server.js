@@ -33,6 +33,15 @@ app.get(/^(?!\/api|\/book|\/health).*/, (req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Recruiter Coordinator MVP running at http://localhost:${PORT}`);
-});
+
+// Vercel imports this file as a module and calls the exported app directly
+// for each request -- it must not also start its own listener. Running
+// `node server.js` locally (or on Render) is the only case that should
+// bind a port itself.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Recruiter Coordinator MVP running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

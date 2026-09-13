@@ -67,7 +67,7 @@ router.post('/', upload.single('csvFile'), async (req, res) => {
       updatedAt: now,
     }));
 
-    db.candidates.saveMany(candidates);
+    await db.candidates.saveMany(candidates);
 
     // Kick off Step 2/3 for the whole batch (fires the first candidate
     // immediately, per the spec, then continues through the rest).

@@ -8,7 +8,7 @@ const calendarService = require('./calendarService');
 const emailService = require('./emailService');
 
 async function processCandidate(candidateId, baseUrl) {
-  const candidate = db.candidates.find(candidateId);
+  const candidate = await db.candidates.find(candidateId);
   if (!candidate) throw new Error(`Candidate ${candidateId} not found`);
   if (candidate.status !== 'PENDING') return candidate; // already processed
 
@@ -21,7 +21,7 @@ async function processCandidate(candidateId, baseUrl) {
   candidate.bookingToken = uuidv4();
   candidate.status = 'SLOTS_SENT';
   candidate.updatedAt = new Date().toISOString();
-  db.candidates.save(candidate);
+  await db.candidates.save(candidate);
 
   await emailService.sendSlotsEmail(candidate, slots, baseUrl);
 
@@ -47,7 +47,7 @@ async function processBatch(candidateIds, baseUrl) {
 }
 
 async function bookCandidateSlot(candidateId, slotIndex, token) {
-  const candidate = db.candidates.find(candidateId);
+  const candidate = await db.candidates.find(candidateId);
   if (!candidate) throw new Error('Candidate not found');
   if (candidate.bookingToken !== token) throw new Error('Invalid or expired booking link');
   if (candidate.status === 'BOOKED') return candidate; // idempotent re-click
@@ -64,7 +64,7 @@ async function bookCandidateSlot(candidateId, slotIndex, token) {
   candidate.bookedSlot = slot;
   candidate.calendarEventId = event.id;
   candidate.updatedAt = new Date().toISOString();
-  db.candidates.save(candidate);
+  await db.candidates.save(candidate);
 
   await emailService.sendCandidateConfirmation(candidate, slot);
   await emailService.sendRecruiterAlert(recruiter, candidate, slot);

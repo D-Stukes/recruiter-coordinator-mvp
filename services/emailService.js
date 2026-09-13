@@ -30,7 +30,7 @@ async function send({ to, subject, text }) {
     mock: true,
   };
   console.log(`[emailService][MOCK] Email to ${to}: "${subject}"`);
-  db.emailLog.append(entry);
+  await db.emailLog.append(entry);
   return entry;
 }
 
